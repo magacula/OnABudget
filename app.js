@@ -41,7 +41,7 @@ var budgetController = (function() {
     // Object the holds calculated budget
     budget: 0,
     // -1 validates that something is non existant
-    percentage: -1
+    percentage: -1,
   };
 
   return {
@@ -58,8 +58,6 @@ var budgetController = (function() {
         ID = 0;
       }
 
-
-
       // Create new item based on inc or exp
       if (type === 'exp') {
         newItem = new Expense(ID, des, val);
@@ -69,6 +67,26 @@ var budgetController = (function() {
 
       data.allItems[type].push(newItem); //Pushes at the end of our data structure (array)
       return newItem; //returns the item
+    },
+
+    // Function that deletes items from data structure
+    deleteItem: function (type, id) {
+      var ids, index;
+
+      // Loop over all elements in inc & exp Array using map
+      // Returns a brand new array
+      var ids = data.allItems[type].map(function (current) {
+        return current.id;
+      });
+
+      // Finds the index of the item's id we want to delete
+      index = ids.indexOf(id);
+
+      // if the element exists in the array
+      if (index !== -1) {
+        data.allItems[type].splice(index, 1) //splice used to remove elements. splice(position where we want to start deleting, # of elements we want to delete)
+      }
+
     },
 
     // Function that calculates budget by calcuating total incomes and total expenses
@@ -83,7 +101,7 @@ var budgetController = (function() {
 
       // 3. Calculate the percentage of income that we spent: (percentage = (total expenses / total income) * 100)
       // ONLY if income is greater than 0. Also rounds to the nearest integer
-      if (data.totals.income > 0) {
+      if (data.totals.inc > 0) {
         data.percentage = Math.round((data.totals.exp / data.totals.inc) * 100);
       } else {
         data.percentage = -1;
@@ -117,7 +135,7 @@ var budgetController = (function() {
 ////////// UI CONTROLLER ////////// (Module that handles UI)
 var UIController = (function() {
 
-  // Variable stores all user input values
+  // Variable that stores all user input values
   // Makes it easier for us to edit the input string names without having to edit the name throughout entire code or "hard code"
   var DOMstrings = {
     inputType: '.add__type',
@@ -126,6 +144,11 @@ var UIController = (function() {
     inputButton: '.add__btn',
     incomeContainer: '.income__list',
     expensesContainer: '.expenses__list',
+    budgetLabel: '.budget__value',
+    incomeLabel: '.budget__income--value',
+    expensesLabel: '.budget__expenses--value',
+    percentageLabel: '.budget__expenses--percentage',
+    container: '.container',
   };
 
   return {
@@ -142,16 +165,16 @@ var UIController = (function() {
     addListItem: function(obj, type) {
       var html, newHtml, element;
 
-      // Creates HTML string with placeholder text
+      // Creates HTML string with placeholder text. (Hard coded)
       if (type === 'inc') {
         element = DOMstrings.incomeContainer;
-        html = '<div class="item clearfix" id="income-%id%"><div class="item__desciption">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+        html = '<div class="item clearfix" id="inc-%id%"><div class="item__desciption">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
       } else {
         element = DOMstrings.expensesContainer;
-        html = '<div class="item clearfix" id="expense-%id%"><div class="item__desciption">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">%percentage%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+        html = '<div class="item clearfix" id="exp-%id%"><div class="item__desciption">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">%percentage%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
       }
 
-      // Functipm that replaces the placeholder text with some actual data
+      // Function that replaces the placeholder text with some actual data
       newHtml = html.replace('%id%', obj.id);
       newHtml = newHtml.replace('%description%', obj.description);
       newHtml = newHtml.replace('%value%', obj.value);
@@ -160,6 +183,12 @@ var UIController = (function() {
       // beforeend keyword - lets us insert our new html as a child of income__list or expenses__list (incomeContainer/expensesContainer)
       document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
 
+    },
+
+    // Function that deletes elements from UI
+    deleteListItem: function (selectorID) {
+      var el = document.getElementById(selectorID);
+      el.parentNode.removeChild(el);
     },
 
     // Function that clears input fields after entering
@@ -181,6 +210,19 @@ var UIController = (function() {
 
     },
 
+    // Function that prints budget to screen, taking in an object to store the data
+    displayBudget: function (obj) {
+      document.querySelector(DOMstrings.budgetLabel).textContent = obj.budget;
+      document.querySelector(DOMstrings.incomeLabel).textContent = obj.totalInc;
+      document.querySelector(DOMstrings.expensesLabel).textContent = obj.totalExp;
+      if (obj.percentage > 0) {
+        document.querySelector(DOMstrings.percentageLabel).textContent = obj.percentage + '%';
+      }
+      else {
+        document.querySelector(DOMstrings.percentageLabel).textContent = '---';
+      }
+    },
+
     // Function that gets & returns the object DOMstrings
     getDOMstrings: function() {
       return DOMstrings;
@@ -196,17 +238,17 @@ var controller = (function(budgetCtrl, UICtrl) {
   var setupEventListeners = function() {
     // Stores DOM Strings into variable "DOM"
     var DOM = UICtrl.getDOMstrings();
-
     // Event Handler on buttom
     document.querySelector(DOM.inputButton).addEventListener('click', ctrlAddItem);
 
     document.addEventListener('keypress', function(event) {
-      // Adds item if user clicks enter buttom, calls ctrlAddItem function
+      // Adds item if user clicks enter buttom, calls ctrlAddItem function. Return button keyCode = 13
       if (event.keycode === 13 || event.which === 13) {
         ctrlAddItem();
       }
-
     });
+    // Deletes events
+    document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
   };
 
   // Function that updates the budget everytime we enter a new item in the UI
@@ -216,7 +258,7 @@ var controller = (function(budgetCtrl, UICtrl) {
     // 2. Return the budget
     var budget = budgetCtrl.getBudget();
     // 3. Display the budget on the UI
-    console.log(budget);
+    UICtrl.displayBudget(budget);
   };
 
   // Function that adds items to Event Handler
@@ -240,15 +282,45 @@ var controller = (function(budgetCtrl, UICtrl) {
       // 5. Calculate and update budget
       updateBudget();
     }
-
-
-
   };
+
+  // Function that will delete events in Event Handler. Passes "event" into function to select target element on UI
+  var ctrlDeleteItem = function (event) {
+    var itemID, splitID, type, ID;
+    // Moves up from target element to parent node. (button -> item clearfix) Traversed the DOM 3x
+    itemID = event.target.parentNode.parentNode.parentNode.id;
+
+    //Gets unique ID to delete
+    if (itemID) {
+      // spilts string of ID into two strings: type and ID. ex) 'inc-1'
+      // isolated strings into separate variables
+      splitID = itemID.split('-');
+      type = splitID[0];
+      ID = parseInt(splitID[1]); // convert to an integer
+
+      // 1. Delete item from data structure
+      budgetCtrl.deleteItem(type, ID);
+
+      // 2. Delete item from the UI
+      UICtrl.deleteListItem(itemID);
+
+      // 3. Update & Show the new budget
+      updateBudget();
+    }
+  };
+
 
   return {
     // Intialization Function - (Function that executes everytime we begin program. Ensures we "set up" objects correctly)
     init: function() {
       console.log('Application has started');
+      // function call to display budget and to reset at start up
+      UICtrl.displayBudget({
+        budget: 0,
+        totalInc: 0,
+        totalExp: 0,
+        percentage: -1, //since no percentage at all at start up
+      });
       setupEventListeners(); // function call to set up EventListeners
     }
   };
