@@ -12,7 +12,7 @@ var budgetController = (function() {
   // Function calculates percentage
   Expense.prototype.calculatePercentages = function (totalIncome) {
     if (totalIncome > 0) {
-      this.percentage = Math.round((this.value / totalIncome)) * 100;
+      this.percentage = Math.round((this.value / totalIncome) * 100);
     } else {
       this.percentage = -1;
     }
@@ -21,7 +21,7 @@ var budgetController = (function() {
   // Function gets percentage
   Expense.prototype.getPercentage = function () {
     return this.percentage;
-  }
+  };
 
   // Income object
   var Income = function(id, description, value) {
@@ -139,7 +139,6 @@ var budgetController = (function() {
       return allPerc;
     },
 
-
     // Function that gets & returns calculated budget w/ total incomes, expenses, and percentages
     getBudget: function () {
       return {
@@ -180,6 +179,7 @@ var UIController = (function() {
     expensesLabel: '.budget__expenses--value',
     percentageLabel: '.budget__expenses--percentage',
     container: '.container',
+    ExpPercLabel: '.item__percentage',
   };
 
   return {
@@ -254,6 +254,33 @@ var UIController = (function() {
       }
     },
 
+    // Function that displays the percentages of each expense object
+    displayPercentages: function (percentages) {
+      // variable that stores all percent labels
+      var fields = document.querySelectorAll(DOMstrings.ExpPercLabel);
+
+      // This function is a for loop, after each iteration it will call callback function
+      // Callback function has parameters (current, index)
+      // Reuseable code for the rest of program if needed
+      var nodeListForEach = function (list, callback) {
+        for (var i = 0; i < list.length; i++) {
+          callback(list[i], i);
+          console.log(i);
+        }
+      };
+
+      // Function that passes callback function & adds HTML to UI
+      nodeListForEach(fields, function (current, index) {
+        if (percentages[index] > 0) {
+          current.textContent = percentages[index] + '%';
+        } else {
+          current.textContent = '---';
+        }
+
+      });
+
+    },
+
     // Function that gets & returns the object DOMstrings
     getDOMstrings: function() {
       return DOMstrings;
@@ -302,8 +329,8 @@ var controller = (function(budgetCtrl, UICtrl) {
     var percentages = budgetCtrl.getPercentages();
 
      // 3. Update the UI with new percentages
-     console.log(percentages);
-  }
+     UICtrl.displayPercentages(percentages);
+  };
 
   // Function that adds items to Event Handler
   var ctrlAddItem = function() {
