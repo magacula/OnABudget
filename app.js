@@ -153,7 +153,7 @@ var budgetController = (function() {
     // Remove or comment out during production
     testing: function() {
       console.log(data);
-    }
+    },
   };
 
 
@@ -180,6 +180,7 @@ var UIController = (function() {
     percentageLabel: '.budget__expenses--percentage',
     container: '.container',
     ExpPercLabel: '.item__percentage',
+    dateLabel: '.budget__title--month',
   };
 
   // Function that formats the numbers by adding minus sign for expense & plus sign for income items
@@ -310,10 +311,27 @@ var UIController = (function() {
       });
     },
 
+    // Function that displays date on top of budget
+    displayDate: function () {
+      var now, year;
+
+      now = new Date(); // Date object represents the current date and time, specified in the local time zone, as of the time of instantiation.
+
+      // Array that holds month strings
+      months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      // Returns the current month as a number
+      month = now.getMonth();
+
+
+      year = now.getFullYear(); // Returns the current year
+
+      document.querySelector(DOMstrings.dateLabel).textContent = months[month] + ' ' + year; // placeholder html is replaced with current year string
+    },
+
     // Function that gets & returns the object DOMstrings
     getDOMstrings: function() {
       return DOMstrings;
-    }
+    },
   };
 })();
 
@@ -420,6 +438,8 @@ var controller = (function(budgetCtrl, UICtrl) {
     // Intialization Function - (Function that executes everytime we begin program. Ensures we "set up" objects correctly)
     init: function() {
       console.log('Application has started');
+      // function call to display current year
+      UICtrl.displayDate();
       // function call to display budget and to reset at start up
       UICtrl.displayBudget({
         budget: 0,
