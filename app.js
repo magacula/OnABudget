@@ -182,6 +182,33 @@ var UIController = (function() {
     ExpPercLabel: '.item__percentage',
   };
 
+  // Function that formats the numbers by adding minus sign for expense & plus sign for income items
+  // Rounds to exactly two decimal points & comma separting the thousands
+  // parameters: number is the digits associated with objects
+  //            type is whether it is exp or inc
+  var formatNumber =  function (num, type) {
+    var numSplit, int, dec;
+    // returns absolute value of number, removes sign
+    num = Math.abs(num);
+    // method of number prototype (rounds exactly to two numbers decimal places)
+    // 2314.4567 -> 2,313.46
+    num = num.toFixed(2); // 2 = two decimal places
+
+    numSplit = num.split('.');  // splits string into an array of substrings, then returns new array
+
+    int = numSplit[0];  // first element is integer part of number
+    // if our number has more than 3 digits then a comma is added for thousands
+    if (int.length > 3) {
+      int = int.substr(0, int.length - 3) + ',' + int.substr(int.length - 3, 3);  // ex) 23471 -> 23,471
+    }
+
+    dec = numSplit[1];  // second element is decimal numbers of whole number
+
+    // Returns formatted number
+    // ternary operator used
+    return (type === 'exp' ? sign = '-' : sign = '+') + ' ' + int + '.' + dec;
+  };
+
   return {
     // Function that gets input values from user & is returned
     getInput: function() {
@@ -208,7 +235,7 @@ var UIController = (function() {
       // Function that replaces the placeholder text with some actual data
       newHtml = html.replace('%id%', obj.id);
       newHtml = newHtml.replace('%description%', obj.description);
-      newHtml = newHtml.replace('%value%', obj.value);
+      newHtml = newHtml.replace('%value%', formatNumber(obj.value, type));  // FormatNumber function called and value is formatted & returned
 
       // Insert the html into the DOM using insertAdjacentHTML method
       // beforeend keyword - lets us insert our new html as a child of income__list or expenses__list (incomeContainer/expensesContainer)
@@ -243,9 +270,12 @@ var UIController = (function() {
 
     // Function that prints budget to screen, taking in an object to store the data
     displayBudget: function (obj) {
-      document.querySelector(DOMstrings.budgetLabel).textContent = obj.budget;
-      document.querySelector(DOMstrings.incomeLabel).textContent = obj.totalInc;
-      document.querySelector(DOMstrings.expensesLabel).textContent = obj.totalExp;
+      var type;
+      obj.budget > 0 ? type = 'inc' : type = 'exp';
+
+      document.querySelector(DOMstrings.budgetLabel).textContent = formatNumber(obj.budget, type);
+      document.querySelector(DOMstrings.incomeLabel).textContent = formatNumber(obj.totalInc, 'inc');
+      document.querySelector(DOMstrings.expensesLabel).textContent = formatNumber(obj.totalExp, 'exp');
       if (obj.percentage > 0) {
         document.querySelector(DOMstrings.percentageLabel).textContent = obj.percentage + '%';
       }
@@ -278,7 +308,6 @@ var UIController = (function() {
         }
 
       });
-
     },
 
     // Function that gets & returns the object DOMstrings
@@ -361,8 +390,8 @@ var controller = (function(budgetCtrl, UICtrl) {
   // Function that will delete events in Event Handler. Passes "event" into function to select target element on UI
   var ctrlDeleteItem = function (event) {
     var itemID, splitID, type, ID;
-    // Moves up from target element to parent node. (button -> item clearfix) Traversed the DOM 3x
-    itemID = event.target.parentNode.parentNode.parentNode.id;
+    // Moves up from target element to parent node. (button -> item clearfix) Traversed the DOM 4x
+    itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
 
     //Gets unique ID to delete
     if (itemID) {
