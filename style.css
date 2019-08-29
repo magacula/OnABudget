@@ -1,0 +1,54 @@
+/********** GENERAL **********/
+/****************************/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    color: #555;
+    font-family: Open Sans;
+    font-size: 20px;
+    position: relative;
+    height: 400vh;
+    font-weight: 400;
+}
+
+.right {
+     float: none;
+     position: relative;
+}
+ .red {
+     color: #FF5049 !important;
+}
+ .red-focus:focus {
+     border: 3px solid #FF5049 !important;
+}
+
+/********** TOP PART **********/
+/******************************/
+ .top {
+     height: 45vh;
+     background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('bg.jpg');
+     background-size: cover;
+     background-position: center;
+     position: relative;
+}
+ .budget {
+     position: relative;
+     color: #fff;
+}
+ .budget__title {
+     font-size: 35px;
+     text-align: center;
+     margin-bottom: 10px;
+     font-weight: 300;
+}
+ .budget__value {
+     font-weight: 300;
+     font-size: 45px;
+     text-align: center;
+     margin-bottom: 10px;
+     letter-spacing: 2px;
+}

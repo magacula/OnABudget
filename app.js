@@ -9,7 +9,7 @@ var budgetController = (function() {
     this.percentage = -1;
   };
 
-  // Function calculates percentage
+  // Function calculates percentage of total income
   Expense.prototype.calculatePercentages = function (totalIncome) {
     if (totalIncome > 0) {
       this.percentage = Math.round((this.value / totalIncome) * 100);
@@ -38,6 +38,7 @@ var budgetController = (function() {
     data.allItems[type].forEach(function (curr) {
       sum += curr.value;
     });
+
     data.totals[type] = sum;  // stores the sum into totals object
   };
 
@@ -90,7 +91,7 @@ var budgetController = (function() {
 
       // Loop over all elements in inc & exp Array using map
       // Returns a brand new array
-      var ids = data.allItems[type].map(function (current) {
+      ids = data.allItems[type].map(function (current) {
         return current.id;
       });
 
@@ -99,7 +100,7 @@ var budgetController = (function() {
 
       // if the element exists in the array
       if (index !== -1) {
-        data.allItems[type].splice(index, 1) //splice used to remove elements. splice(position where we want to start deleting, # of elements we want to delete)
+        data.allItems[type].splice(index, 1); //splice used to remove elements. splice(position where we want to start deleting, # of elements we want to delete)
       }
 
     },
@@ -210,9 +211,18 @@ var UIController = (function() {
     return (type === 'exp' ? sign = '-' : sign = '+') + ' ' + int + '.' + dec;
   };
 
+  // This function is a for loop, after each iteration it will call callback function
+  // Callback function has parameters (current, index)
+  // Reuseable code for the rest of program if needed
+  var nodeListForEach = function (list, callback) {
+    for (var i = 0; i < list.length; i++) {
+      callback(list[i], i);
+    }
+  };
+
   return {
     // Function that gets input values from user & is returned
-    getInput: function() {
+    getInput: function () {
       return {
         // Creates and returns an object of all 3 input values
         type: document.querySelector(DOMstrings.inputType).value, // Will be either inc or exp
@@ -230,7 +240,7 @@ var UIController = (function() {
         html = '<div class="item clearfix" id="inc-%id%"><div class="item__desciption">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
       } else {
         element = DOMstrings.expensesContainer;
-        html = '<div class="item clearfix" id="exp-%id%"><div class="item__desciption">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">%percentage%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+        html = '<div class="item clearfix" id="exp-%id%"><div class="item__desciption">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">%percentage%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
       }
 
       // Function that replaces the placeholder text with some actual data
@@ -290,16 +300,6 @@ var UIController = (function() {
       // variable that stores all percent labels
       var fields = document.querySelectorAll(DOMstrings.ExpPercLabel);
 
-      // This function is a for loop, after each iteration it will call callback function
-      // Callback function has parameters (current, index)
-      // Reuseable code for the rest of program if needed
-      var nodeListForEach = function (list, callback) {
-        for (var i = 0; i < list.length; i++) {
-          callback(list[i], i);
-          console.log(i);
-        }
-      };
-
       // Function that passes callback function & adds HTML to UI
       nodeListForEach(fields, function (current, index) {
         if (percentages[index] > 0) {
@@ -328,10 +328,26 @@ var UIController = (function() {
       document.querySelector(DOMstrings.dateLabel).textContent = months[month] + ' ' + year; // placeholder html is replaced with current year string
     },
 
+    // Function that changes color depending on income or expense
+    changedType: function () {
+      var fields = document.querySelectorAll(
+        DOMstrings.inputType + ',' +
+        DOMstrings.inputDescription + ',' +
+        DOMstrings.inputValue);
+
+      //  Changes colors
+      nodeListForEach(fields, function (curr) {
+        curr.classList.toggle('red-focus'); //toggle adds the red-focus class when its not there. Also removes it when it is there
+      });
+
+      document.querySelector(DOMstrings.inputBtn).classList.toggle('red');
+
+    },
+
     // Function that gets & returns the object DOMstrings
     getDOMstrings: function() {
       return DOMstrings;
-    },
+    }
   };
 })();
 
@@ -354,6 +370,9 @@ var controller = (function(budgetCtrl, UICtrl) {
     });
     // Deletes events
     document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
+
+    // creates a changed event to change colors of events
+    document.querySelector(DOM.inputType).addEventListener('change', UICtrl.changedType);
   };
 
 
