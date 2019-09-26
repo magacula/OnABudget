@@ -375,7 +375,6 @@ var controller = (function(budgetCtrl, UICtrl) {
     document.querySelector(DOM.inputType).addEventListener('change', UICtrl.changedType);
   };
 
-
   // Function that updates the budget everytime we enter a new item in the UI
   var updateBudget = function () {
     // 1. Calculate the budget
@@ -451,7 +450,6 @@ var controller = (function(budgetCtrl, UICtrl) {
       updatePercentages();
     }
   };
-
 
   return {
     // Intialization Function - (Function that executes everytime we begin program. Ensures we "set up" objects correctly)

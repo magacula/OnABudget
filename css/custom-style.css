@@ -1,0 +1,9 @@
+.jumbotron-fluid{
+    height: 100%;
+    width: 100%;
+    background-image: url("../img/bg.jpg");
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+
+}
