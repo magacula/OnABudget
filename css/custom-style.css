@@ -10,16 +10,16 @@
 
 .display-4 {
   margin-top: -10px;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 }
 
 .budget__value {
   margin-top: -10px;
-  font-size: 25px;
+  font-size: 35px;
 }
 
 .heading {
-  padding-top: 20px;
+  margin: auto;
   font-size: 20px;
   font-weight:600;
 }
