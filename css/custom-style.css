@@ -7,3 +7,26 @@
     text-align: center;
 
 }
+
+.display-4 {
+  margin-top: -10px;
+  padding-bottom: 20px;
+}
+
+.budget__value {
+  margin-top: -10px;
+  font-size: 25px;
+}
+
+.heading {
+  padding-top: 20px;
+  font-size: 20px;
+  font-weight:600;
+}
+
+
+
+
+.add {
+  text-align: center;
+}
