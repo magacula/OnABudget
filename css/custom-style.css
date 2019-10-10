@@ -16,14 +16,23 @@
 
 .budget__value {
   margin-top: -10px;
-  font-size: 35px;
+  font-size: 50px;
 }
 
 .top_heading {
-  margin: auto;
-  font-size: 20px;
-  font-weight:450;
+  font-size: 30px;
 }
+
+.budget__income--text {
+  color: green;
+  font-size: 30px;
+}
+
+.budget__expenses--text {
+  color: rgb(227, 47, 47);
+  font-size: 30px;
+}
+
 
 
 /* Bottom */
