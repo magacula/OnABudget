@@ -1,3 +1,4 @@
+/* top */
 .jumbotron-fluid{
     height: 100%;
     width: 100%;
@@ -18,15 +19,20 @@
   font-size: 35px;
 }
 
-.heading {
+.top_heading {
   margin: auto;
   font-size: 20px;
-  font-weight:600;
+  font-weight:450;
 }
 
 
-
-
+/* Bottom */
 .add {
+  margin-top: -15px;
   text-align: center;
+}
+
+.bottom_heading {
+  text-align: center;
+
 }
