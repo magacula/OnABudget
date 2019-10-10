@@ -29,11 +29,12 @@
       </div>
 
       <div class="container">
-        <div class="row heading">
+        <div class="row top_heading">
+
           <div class="col-md-6 col-lg-6">
-            <div class="budget__income clearfix" style="color:green;">
-              <div class="budget__income--text" >Income</div>
-              <div class="right">
+            <div class="budget__income clearfix">
+              <div class="budget__income--text" style="color:green;">Income</div>
+              <div class="left">
                 <div class="budget__income--value">+ 4,300.00</div>
                 <div class="budget__income--percentage">&nbsp;</div>
               </div>
@@ -41,24 +42,21 @@
           </div>
 
           <div class="col-md-6 col-lg-6">
-            <div class="budet__expenses clearfix" style="color:crimson;">
-              <div class="budget__expenses--text">Expenses</div>
-              <div class="right clearfix">
+            <div class="budet__expenses clearfix">
+              <div class="budget__expenses--text" style="color:crimson;">Expenses</div>
+              <div class="right">
                 <div class="budget__expenses--value">- 1,954.36</div>
                 <div class="budget__expenses--percentage">45%</div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
-
-
     </div>
-
-
-
-
   </div>
+
+
 
 
   <!-- Bottom section of UI (Adding items/Showing items added) -->
@@ -75,19 +73,67 @@
       </div>
     </div>
 
-    <div class="container clearfix">
-      <div class="income">
-        <h2 class="income__title">Income</h2>
+
+    <div class="container">
+      <div class="row bottom_heading">
+        <div class="col-md-6 col-lg-6">
+          <div class="income">
+            <h2 class="income__title">Income</h2>
+
+            <!-- displays the income objects that were created  -->
+            <div class="income__list">
+              <!--
+              <div class="item clearfix" id="income-0">
+                <div class="item__desciption">Salary</div>
+                <div class="left clearfix">
+                  <div class="item__value">+ 2,100.00</div>
+                  <div class="item__delete">
+                    <button class="item__delete--btn">
+                      <i class="ion-ios-close-outline"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+          ----->
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-6">
+          <div class="expenses">
+            <h2 class="expenses__title">Expenses</h2>
+            <!-- displays the expense objects that were created  -->
+            <div class="expenses__list">
+              <!--
+              <div class="item clearfix" id="expense-0">
+                <div class="item__desciption">Apartment rent</div>
+                <div class="right clearfix">
+                  <div class="item__value">- 650</div>
+                  <div class="item__percentage">21%</div>
+                  <div class="item__delete">
+                    <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
+                  </div>
+                </div>
+              </div>
+          ----->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 
 
 
-        <!-- jQuery library -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <!-- Bootstrap JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <script src="app.js"></script>
+
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="app.js"></script>
 </body>
 
 </html>
@@ -172,7 +218,7 @@
 
 
 <!-- displays the income objects that were created  -->
-<!---------          <div class="income__list">         -------------->
+<!--------          <div class="income__list">         -------------->
 
 
 <!--
