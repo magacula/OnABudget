@@ -179,7 +179,7 @@ var UIController = (function() {
     incomeLabel: '.budget__income--value',
     expensesLabel: '.budget__expenses--value',
     percentageLabel: '.budget__expenses--percentage',
-    container: '.container',
+    container: '.container1',
     ExpPercLabel: '.item__percentage',
     dateLabel: '.budget__title--month',
   };
@@ -426,8 +426,8 @@ var controller = (function(budgetCtrl, UICtrl) {
   // Function that will delete events in Event Handler. Passes "event" into function to select target element on UI
   var ctrlDeleteItem = function (event) {
     var itemID, splitID, type, ID;
-    // Moves up from target element to parent node. (button -> item clearfix) Traversed the DOM 4x
-    itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+    // Moves up from target element to parent node. (button -> item clearfix) Using DOM Traversing 4 times
+    itemID = event.target.parentNode.parentNode.parentNode.id;
 
     //Gets unique ID to delete
     if (itemID) {
@@ -449,6 +449,8 @@ var controller = (function(budgetCtrl, UICtrl) {
       // 4. Calculate and update percentages
       updatePercentages();
     }
+
+
   };
 
   return {
