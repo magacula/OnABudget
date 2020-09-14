@@ -1,12 +1,11 @@
 /* top */
-.jumbotron-fluid{
-    height: 100%;
-    width: 100%;
-    background-image: url("../img/bg.jpg");
-    background-size: cover;
-    background-position: center;
-    text-align: center;
-
+.jumbotron-fluid {
+  height: 100%;
+  width: 100%;
+  background-image: url("../img/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  text-align: center;
 }
 
 .display-4 {
@@ -33,15 +32,54 @@
   font-size: 30px;
 }
 
+.top-container {
+  background-color: rgba(192, 160, 160, 0.705);
+  padding: 0;
+}
 
+.budget__expenses--text,
+.budget__income--text {
+  background-color: rgba(189, 188, 188, 0.425);
+}
 
 /* Bottom */
-.add {
-  margin-top: -15px;
+.add__container {
   text-align: center;
 }
 
 .bottom_heading {
   text-align: center;
+}
 
+#btn {
+  box-sizing: border-box;
+  margin: 10px 0 10px 10px;
+  text-decoration: none;
+  display: inline-block;
+  height: 21px;
+  width: 40px;
+  cursor: pointer;
+}
+
+.item__delete--btn {
+  height: 1rem;
+  width: 2rem;
+  background-color: #cccccc;
+
+  border: none;
+  text-align: center;
+}
+
+.income-item {
+  color: #008000;
+}
+
+.expense-item {
+  color: #ff0000;
+}
+
+@media (min-width: 441px) {
+  .add__container {
+    text-align: center;
+  }
 }
