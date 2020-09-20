@@ -1,4 +1,5 @@
-////////// BUDGET CONTROLLER ////////// (Module that handles the data entered - Income, Expenses, Percentages )
+/////////////////////////// BUDGET CONTROLLER ///////////////////////////////
+// Module that handles the data (Calculations of Income, Expenses, and Percentages) a.k.a MODEL
 var budgetController = (function () {
   // Function Constructor: Sets up an object that includes a id(type), description, & value
   // Expense object
@@ -157,7 +158,11 @@ var budgetController = (function () {
   };
 })();
 
-////////// UI CONTROLLER ////////// (Module that handles UI)
+////////////////////////////////////////// UI CONTROLLER //////////////////////////////////////////////
+// Module that handles UI (Accepts data and determines how to display it) a.k.a ViEW (Observer)
+// Presents the model's data to the user. Takes in user input & displays it to user
+// The view knows how to access the model's data, but it does not know what this data means or what the user can do to manipulate it
+// The VIEW has no idea that MODEL exists
 var UIController = (function () {
   // Variable that stores all user input values
   // Makes it easier for us to edit the input string names without having to edit the name throughout entire code or "hard code"
@@ -345,24 +350,6 @@ var UIController = (function () {
         months[month] + " " + year; // placeholder html is replaced with current year string
     },
 
-    // Function that changes color depending on income or expense
-    changedType: function () {
-      var fields = document.querySelectorAll(
-        DOMstrings.inputType +
-          "," +
-          DOMstrings.inputDescription +
-          "," +
-          DOMstrings.inputValue
-      );
-
-      //  Changes colors
-      nodeListForEach(fields, function (curr) {
-        curr.classList.toggle("red-focus"); //toggle adds the red-focus class when its not there. Also removes it when it is there
-      });
-
-      document.querySelector(DOMstrings.inputBtn).classList.toggle("red");
-    },
-
     // Function that gets & returns the object DOMstrings
     getDOMstrings: function () {
       return DOMstrings;
@@ -370,7 +357,10 @@ var UIController = (function () {
   };
 })();
 
-/////////////////////////////////////////////// GLOBAL APP CONTROLLER //////////////////////////////////////////// (Module that connects budget controller & UI controller)
+////////////////////////////////////// GLOBAL APP CONTROLLER /////////////////////////////////
+// Module that connects budget controller & UI controller. a.k.a CONTROLLER (Listener)
+// It listens to events triggered by the VIEW and executes the appropriate reaction to these events using an Event Handler
+
 var controller = (function (budgetCtrl, UICtrl) {
   // Function that holds all of the EventListeners
   var setupEventListeners = function () {
