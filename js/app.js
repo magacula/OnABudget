@@ -366,26 +366,22 @@ var controller = (function (budgetCtrl, UICtrl) {
   var setupEventListeners = function () {
     // Stores DOM Strings into variable "DOM"
     var DOM = UICtrl.getDOMstrings();
-    // Event Handler on buttom
+    // Event Handler on button
     document
       .querySelector(DOM.inputButton)
       .addEventListener("click", ctrlAddItem);
 
     document.addEventListener("keypress", function (event) {
-      // Adds item if user clicks enter button, calls ctrlAddItem function. Return button keyCode = 13
+      // Adds item if user clicks enter button, calls ctrlAddItem function. Enter button keyCode = 13
       if (event.keycode === 13 || event.which === 13) {
         ctrlAddItem();
       }
     });
+
     // Deletes events
     document
       .querySelector(DOM.container)
       .addEventListener("click", ctrlDeleteItem);
-
-    // creates a changed event to change colors of events
-    document
-      .querySelector(DOM.inputType)
-      .addEventListener("change", UICtrl.changedType);
   };
 
   // Function that updates the budget everytime we enter a new item in the UI
@@ -416,7 +412,7 @@ var controller = (function (budgetCtrl, UICtrl) {
     // 1. Get the filed input data
     input = UICtrl.getInput();
 
-    // Input validation preventing items to be added with no decription or value & to ensure the value IS a number
+    // Input validation preventing items to be added with no description or value & to ensure the value IS a number
     // Runs "true" when input is a number (NOT be NotaNumber)
     if (input.description !== "" && input.value > 0 && !isNaN(input.value)) {
       // 2. Add an item to the budget controller
