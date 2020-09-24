@@ -1,3 +1,3 @@
 # OnABudget
 
-A budget tracker WebApp with built with HTML, CSS, Javascript, and Bootstrap
+A budget tracker web application built with HTML, CSS, Bootstrap, and Vanilla Javascript.
