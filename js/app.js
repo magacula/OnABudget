@@ -43,21 +43,22 @@ var budgetController = (function () {
     data.totals[type] = sum; // stores the sum into totals object
   };
 
-  // Our big Data structure that holds all of the program's data
+  // Our big Data structure used as an object that holds all of the program's data
   var data = {
-    // Object that holds both Expense and Income objects
+    // Object property that holds both Expense and Income arrays
     allItems: {
       exp: [],
       inc: [],
     },
-    // Object that holds total values of each object
+    // Object property that holds total expense and income values
     totals: {
       exp: 0,
       inc: 0,
     },
-    // Object the holds calculated budget
+    // number property the holds calculated budget
     budget: 0,
-    // -1 validates that something is non existant
+    // number property that holds total percentage of expenses compared to income
+    // -1 validates that a percentage is non existent when starting the app
     percentage: -1,
   };
 
@@ -83,6 +84,8 @@ var budgetController = (function () {
       }
 
       data.allItems[type].push(newItem); //Pushes at the end of our data structure (array)
+
+      localStorage.setItem(JSON.stringify(newItem), type);
       return newItem; //returns the item
     },
 
@@ -164,7 +167,7 @@ var budgetController = (function () {
 // The view knows how to access the model's data, but it does not know what this data means or what the user can do to manipulate it
 // The VIEW has no idea that MODEL exists
 var UIController = (function () {
-  // Variable that stores all user input values
+  // Javascript Object that stores all key value pairs of classes of elements
   // Makes it easier for us to edit the input string names without having to edit the name throughout entire code or "hard code"
   var DOMstrings = {
     inputType: ".add__type",
@@ -188,6 +191,7 @@ var UIController = (function () {
   //            type is whether it is exp or inc
   var formatNumber = function (num, type) {
     var numSplit, int, dec;
+
     // returns absolute value of number, removes sign
     num = Math.abs(num);
     // method of number prototype (rounds exactly to two numbers decimal places)
@@ -258,6 +262,7 @@ var UIController = (function () {
     // Function that deletes elements from UI
     deleteListItem: function (selectorID) {
       var el = document.getElementById(selectorID);
+
       el.parentNode.removeChild(el);
     },
 
@@ -284,6 +289,7 @@ var UIController = (function () {
     // Function that prints budget to screen, taking in an object to store the data
     displayBudget: function (obj) {
       var type;
+
       obj.budget > 0 ? (type = "inc") : (type = "exp");
 
       document.querySelector(DOMstrings.budgetLabel).textContent = formatNumber(
@@ -366,6 +372,7 @@ var controller = (function (budgetCtrl, UICtrl) {
   var setupEventListeners = function () {
     // Stores DOM Strings into variable "DOM"
     var DOM = UICtrl.getDOMstrings();
+
     // Event Handler on button
     document
       .querySelector(DOM.inputButton)
@@ -384,12 +391,13 @@ var controller = (function (budgetCtrl, UICtrl) {
       .addEventListener("click", ctrlDeleteItem);
   };
 
-  // Function that updates the budget everytime we enter a new item in the UI
+  // Function that updates the budget every time we enter a new item in the UI
   var updateBudget = function () {
     // 1. Calculate the budget
     budgetCtrl.calculateBudget();
     // 2. Return the budget
     var budget = budgetCtrl.getBudget();
+
     // 3. Display the budget on the UI
     UICtrl.displayBudget(budget);
   };
@@ -409,6 +417,7 @@ var controller = (function (budgetCtrl, UICtrl) {
   // Function that adds items to Event Handler
   var ctrlAddItem = function () {
     var input, newItem;
+
     // 1. Get the filed input data
     input = UICtrl.getInput();
 
@@ -420,6 +429,8 @@ var controller = (function (budgetCtrl, UICtrl) {
 
       // 3. Add an item to the UI
       UICtrl.addListItem(newItem, input.type);
+      // console.log("newItem:", newItem);
+      // console.log("inputType:", input.type);
 
       // 4. Clear fields
       UICtrl.clearFields();
@@ -435,6 +446,7 @@ var controller = (function (budgetCtrl, UICtrl) {
   // Function that will delete events in Event Handler. Passes "event" into function to select target element on UI
   var ctrlDeleteItem = function (event) {
     var itemID, splitID, type, ID;
+
     // Moves up from target element to parent node. (button -> item clearfix) Using DOM Traversing 4 times
     itemID = event.target.parentNode.parentNode.parentNode.id;
 
@@ -461,7 +473,7 @@ var controller = (function (budgetCtrl, UICtrl) {
   };
 
   return {
-    // Intialization Function - (Function that executes everytime we begin program. Ensures we "set up" objects correctly)
+    // Intialization Function - (Function that executes everytime we begin program. Ensures we "set up" objects correctly. Intializes our webpage)
     init: function () {
       console.log("Application has started");
       // function call to display current year
@@ -473,7 +485,7 @@ var controller = (function (budgetCtrl, UICtrl) {
         totalExp: 0,
         percentage: -1, //since no percentage at all at start up
       });
-      setupEventListeners(); // function call to set up EventListeners
+      setupEventListeners(); // function call to invoke EventListeners
     },
   };
 })(budgetController, UIController);

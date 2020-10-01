@@ -64,12 +64,13 @@
             <option value="exp">-</option>
           </select>
           <input
+            id="inpKey"
             type="text"
             class="add__description"
             placeholder="Add description"
-            id="inpKey"
+            required
           />
-          <input type="number" class="add__value" placeholder="Value" id="inpValue"/>
+          <input id="inpValue" type="number" class="add__value" placeholder="Value" required/>
           <button id="btn">
             <i class="ion-ios-checkmark-outline"></i>
           </button>
@@ -128,7 +129,18 @@
     <!-- Bootstrap JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="./js/app.js"></script>
+    <script>
+      function save() {
+
+          // get key value from des box
+          var newData = document.getElementById('inpKey').value;
+
+          // if there is nothing saved at the start then save empty array
+          if(localStorage.getItem('data' == null)) {
+            localStorage.setItem('data','[]');
+          }
+      }
+
+    </script>
   </body>
 </html>
-
-

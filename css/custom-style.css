@@ -11,6 +11,7 @@
 .display-4 {
   margin-top: -10px;
   padding-bottom: 10px;
+  font-weight: 400;
 }
 
 .budget__value {
